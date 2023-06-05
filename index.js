@@ -1,6 +1,13 @@
 const express = require('express');
+const routerApi = require('./routes');
+// const { faker } = require('@faker-js/faker')
+
+const router = express.Router();
+
 const app = express();
 const port = 3000;
+
+app use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hola mi server en express');
@@ -10,12 +17,27 @@ app.get('/nueva-ruta', (req, res) => {
   res.send('Hola soy una nueva ruta');
 });
 
-app.get('/products', (req, res) => {
+routerApi(app);
+
+// app.get('/users',(req,res) => {
+//   const { limit, offset } = req.query;
+//   if (limit && offset) {
+//     rest.json({
+//       limit,
+//       offset
+//     });
+//   } else {
+//     res.send('No hay parametros');
+//   }
+// });
+
+app.get('/categories/:categoryId/products/:productsId', (req,res) => {
+  const {categoryId, productsId} = req.params;
   res.json({
-    name: 'Product 1',
-    price: 1000
+    categoryId,
+    productsId,
   });
-});
+})
 
 app.listen(port, () => {
   console.log('Mi port ' + port);
